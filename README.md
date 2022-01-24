@@ -9,4 +9,4 @@ I enjoyed going out of my way to use fancy and fitting features to solve the cha
 I implemented binary search and recursive algorithms to efficiently determine conditions for the game rules and used ressource embedding as well as 
 one-file self-contained platform independant publish to out a single executable file that is able to run the application anywhere.
 
-**To use this project you can either download the source code and compile it yourself and get the .exe in /publish/win-x86/**
+**To use this project you can either download the source code and compile it yourself or run the .exe in /publish/win-x86/**
