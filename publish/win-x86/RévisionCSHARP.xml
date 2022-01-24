@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>RévisionCSHARP</name>
+    </assembly>
+    <members>
+        <member name="M:RévisionCSHARP.Board.BuildGameBoard(System.String)">
+            <summary>
+            Builds the gameboard from the dices as a string file.
+            </summary>
+            <param name="DiceFile">The dices as string</param>
+            <returns>The dice two dimensional array making up the board</returns>
+        </member>
+        <member name="M:RévisionCSHARP.Board.ShuffleBoard(System.Random)">
+            <summary>
+            Shuffles the board using the supplied Random to choose which dice are moved iteratively.
+            </summary>
+            <param name="Random">An instance of the System.Random class.</param>
+        </member>
+        <member name="M:RévisionCSHARP.Board.TestBoard(System.Char[])">
+            <summary>
+            Searches the word in the board by iteratively seeking if the first letter is found, if yes launches the recursive calls searching neighbouring cells in all eight directions.
+            </summary>
+            <param name="Word">The searched word as a char array</param>
+            <returns>True if the word is found, false if it is not</returns>
+        </member>
+        <member name="M:RévisionCSHARP.Board.SearchNeighbouringCells(System.Char[],System.Int32,System.Collections.Generic.List{System.Tuple{System.Int32,System.Int32}},System.Int32,System.Int32,System.Boolean@)">
+            <summary>
+            Searches neighbouring cells to the one at (CellAbscissa, CellOrdinate) in the board which were not already visited for the letter at WordCharacterCheckIncrement in Word array
+            </summary>
+            <param name="Word">The searched word as a char array</param>
+            <param name="WordCharacterCheckIncrement">Integer representing which letter from the char word array to check for</param>
+            <param name="VisitedCellsCoordinates">List of tuples of the abscissa and ordinate of visited cells</param>
+            <param name="CellAbscissa">Abscissa of the cell whose neighbours are to be searched</param>
+            <param name="CellOrdinate">Ordinate of the cell whose neighbours are to be searched</param>
+            <param name="WordFound">A boolean passed by reference to set it true if the word is found, remains false otherwise</param>
+        </member>
+        <member name="M:RévisionCSHARP.Game.#ctor(System.String,System.String)">
+            <summary>
+            Game class stores the player whose turn it is and the current board.
+            </summary>
+            <param name="DiceFile">Filename for the embedded ressource.</param>
+            <param name="DictionaryFile">Filename for the embedded ressource.</param>
+        </member>
+        <member name="M:RévisionCSHARP.Game.EmbeddedAssemblyFileReader(System.String)">
+            <summary>
+            Read a text file embedded in the assembly.
+            </summary>
+            <param name="FileName">Name of the file in the assembly.</param>
+            <returns>The file as a string.</returns>
+        </member>
+        <member name="M:RévisionCSHARP.Game.Main">
+            <summary>
+            Runs the game. Each player enter words he finds that are three letters or longer without reusing letters. Letters used need to be adjacent in an 8 directional fashion in order to be valid.
+            Each player's turns last one minute, the game lasts six.
+            Whoever scores the most wins.
+            Scores are as follows : for a word of length three to six, lenght - 1, for words seven or more, eleven points.
+            </summary>
+        </member>
+        <member name="M:RévisionCSHARP.Player.Add_Word(System.String)">
+            <summary>
+            Adds the word to the player's list if it is not already in it.
+            Increases the player's score according to the game rule.
+            </summary>
+            <param name="word">The word to add to the player's list</param>
+        </member>
+        <member name="F:RévisionCSHARP.WordDictionary._dictionary">
+            <summary>
+            The structure for the dictionary files is perfect for a System.Collections.Generic.Dictionary as allows to associate the same-sized ordered lines of words with their length as key.
+            </summary>
+        </member>
+        <member name="M:RévisionCSHARP.WordDictionary.#ctor(System.String)">
+            <summary>
+            Creates a dictionary storing words by (key,value), key being the words lenght and value a string array of said words.
+            Since dictionaries as text file are quite small and we need to load them into memory anyway, there is no need to open a stream on the file, the file is passed as string.
+            </summary>
+            <param name="DictionaryFile">The read dictionary file as a string.</param>
+        </member>
+        <member name="M:RévisionCSHARP.WordDictionary.ResearchWordRecursive(System.String,System.Int32,System.Int32)">
+            <summary>
+            Binary Search is very quick to find if a word is or is not in the dictionary. It divides roughly by two the array each iteration with only one read.
+            If we take L the lenght of the array and N the number of calls to be made, we have L/2^N = 1 since we exit either if we find the word in the two last comparisons or if the last one doesn't yield any.
+            If we use e^ln(x) = x on this equation we find that ln(L)/l(2) = N, thus by rounding it up we get the number of calls. Since logarithm is a function that grows exponentially slowly as the abscissa increases,
+            the quality let us know that we need a considerably large total length to increase drastically the number of calls required to verify if the word is there or not.
+            With around 50k in length we round up N to 16 calls.
+            It is universe faster than a bruteforce approach of comparing with each element of the array.
+            </summary>
+            <param name="Word">The word to be searched, case insensitive.</param>
+            <param name="Start">For internal use of the binary search algorithm, represent the left bound of the sub array being searched.</param>
+            <param name="End">The right bound of the search sub array.</param>
+            <returns>True is the word is in, false otherwise.</returns>
+        </member>
+    </members>
+</doc>
